@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitBuddy | Error</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+  <main class="page-shell narrow">
+    <section class="card auth-card">
+      <div class="brand">FIT<span>BUDDY</span></div>
+      <div class="error"><strong>Something went wrong</strong><br>{{ message }}</div>
+      <a href="/" class="primary-btn button-link">← Back to home</a>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitBuddy | Admin Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+  <main class="page-shell wide">
+    <header class="topbar">
+      <div><a href="/" class="brand">FIT<span>BUDDY</span></a><p class="muted">Admin dashboard</p></div>
+      <a href="/" class="ghost-btn">← Home</a>
+    </header>
+
+    <section class="card">
+      <p class="section-kicker">OVERVIEW</p>
+      <h1>Registered users & plans</h1>
+      {% if not users %}
+        <p class="muted">No users have generated a plan yet.</p>
+      {% endif %}
+    </section>
+
+    {% for user in users %}
+      <section class="card admin-user">
+        <div class="admin-user-head">
+          <div>
+            <h2>{{ user.username }} <span class="user-id">{{ user.user_id }}</span></h2>
+            <p>{{ user.age }} years · {{ user.weight }} kg · {{ user.goal|title }} · {{ user.intensity|title }} intensity</p>
+          </div>
+          <form method="post" action="/admin/delete/{{ user.user_id }}" onsubmit="return confirm('Delete this user and their plans?')">
+            <button class="danger-btn">Delete</button>
+          </form>
+        </div>
+        {% for plan in plans_by_user.get(user.user_id, []) %}
+          <details>
+            <summary>Plan #{{ plan.id }} · {{ 'Updated' if plan.updated_plan else 'Original only' }}</summary>
+            <div class="admin-plan-grid">
+              <div><h3>Original plan</h3><pre class="plan-text">{{ plan.original_plan }}</pre></div>
+              <div><h3>Updated plan</h3><pre class="plan-text">{{ plan.updated_plan or 'No feedback update yet.' }}</pre></div>
+            </div>
+            {% if plan.feedback %}<p><strong>Feedback:</strong> {{ plan.feedback }}</p>{% endif %}
+          </details>
+        {% endfor %}
+      </section>
+    {% endfor %}
+  </main>
+</body>
+</html>
